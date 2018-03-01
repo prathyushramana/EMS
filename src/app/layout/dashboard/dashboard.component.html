@@ -1,0 +1,100 @@
+<div [@routerTransition] class="center_div">
+
+    <div class="row justify-content-md-center">
+        <!--Section to update the Default password-->
+
+        <div class="container-fluid" *ngIf="isDefaultPasswordSet">
+            <h2 class="page-header text-center">
+                Reset Password
+            </h2>
+
+            <form [formGroup]="resetPasswordForm" class="container">
+
+                <div class="form-group row">
+                    <label for="curnPwd" class="col-lg-4 col-form-label">Current Password:</label>
+                    <div class="col-lg-6 ">
+                        <input type="password" class="form-control" id="curnPwd" [(ngModel)]="logInDetails.OldPassword" name="OldPassword" formControlName="OldPassword">
+                        <div class="alert alert-danger" *ngIf="isFieldInvalid('OldPassword') && formSubmitAttempt" style="margin-top: 5px;">
+                            Please provide Current Password
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Newpwd" class="col-lg-4 col-form-label">New Password:</label>
+                    <div class="col-lg-6 ">
+                        <input type="password" class="form-control" id="Newpwd" [(ngModel)]="logInDetails.Password" name="Password" formControlName="Password">
+                        <div class="alert alert-danger" *ngIf="isFieldInvalid('Password') && formSubmitAttempt" style="margin-top: 5px;">
+                            Please provide New Password
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="Conpwd" class="col-lg-4 col-form-label">Confirm Password:</label>
+                    <div class="col-lg-6 ">
+                        <input type="password" class="form-control" id="Conpwd" [(ngModel)]="logInDetails.ConfPassword" name="ConfPassword" formControlName="ConfPassword">
+                        <div class="alert alert-danger" *ngIf="isFieldInvalid('ConfPassword') && formSubmitAttempt" style="margin-top: 5px;">
+                            Please provide Confirm Password.
+                        </div>
+                        <div class="alert alert-danger" *ngIf="resetPasswordForm.hasError('notEquivalent','ConfPassword') && formSubmitAttempt" style="margin-top: 5px;">
+                            Password and Confirm Password is not the same.
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-xl-3 text-xs-center">
+
+                    </div>
+                    <div class="col-xl-2 text-xs-center">
+                        <button type="button" class="btn btn-info" (click)="submitPasswordUpdate()">
+              <span class="glyphicon glyphicon-ok"></span> Save</button>
+                    </div>
+                    <div class="col-xl-2 text-xs-center">
+                        <button type="button" class="btn btn-danger ">
+              <span class="glyphicon glyphicon-remove"></span>Clear</button>
+                    </div>
+                    <div class="col-xl-3 text-xs-center">
+
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    <!-- <div class="panel panel-primary" *ngIf="isDefaultPasswordSet">
+    <div class="panel-body">
+      <form [formGroup]="resetPasswordForm">
+        <div class="form-group">
+          <label for="curnPwd">Current Password:</label>
+          <input type="password" class="form-control" id="curnPwd" [(ngModel)]="logInDetails.OldPassword" name="OldPassword" formControlName="OldPassword">
+          <div class="alert alert-danger" *ngIf="isFieldInvalid('OldPassword') && formSubmitAttempt" style="margin-top: 5px;">
+            Please provide Current Password
+          </div>
+        </div> 
+        <div class="form-group">
+          <label for="Newpwd">New Password:</label>
+          <input type="password" class="form-control" id="Newpwd" [(ngModel)]="logInDetails.Password" name="Password" formControlName="Password">
+            <div class="alert alert-danger" *ngIf="isFieldInvalid('Password') && formSubmitAttempt" style="margin-top: 5px;">
+              Please provide New Password
+            </div>        
+        </div> 
+         <div class="form-group">
+          <label for="Conpwd">Confirm Password:</label>
+          <input type="password" class="form-control" id="Conpwd" [(ngModel)]="logInDetails.ConfPassword" name="ConfPassword" formControlName="ConfPassword">
+          <div class="alert alert-danger" *ngIf="isFieldInvalid('ConfPassword') && formSubmitAttempt" style="margin-top: 5px;">
+            Please provide Confirm Password.
+          </div>
+          <div class="alert alert-danger" *ngIf="resetPasswordForm.hasError('notEquivalent','ConfPassword') && formSubmitAttempt" style="margin-top: 5px;">
+            Password and Confirm Password is not the same.
+          </div>
+        </div>
+        <button type="button" class="btn btn-info" (click)="submitPasswordUpdate()">Save Changes</button>
+        <button type="button" class="btn btn-danger">Clear All</button>
+      </form>
+    </div> -->
+    <div class="panel-footer">
+        <span style="color:red;" *ngIf="isError">
+      <b>{{statusMessage}}</b>
+    </span>
+    </div>
+</div>

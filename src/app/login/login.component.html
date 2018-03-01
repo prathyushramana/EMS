@@ -1,0 +1,32 @@
+<div class="login-page" [@routerTransition]>
+    <div class="row justify-content-md-center">
+        <div class="col-md-4">
+            <img src="assets/images/logo.svg" width="150px" class="user-avatar" />
+            <h1>Employee Managemement System</h1>
+            <form role="form">
+                <div class="form-content">
+                    <div class="form-group">
+                        <label for="inputLoginID">User Name</label>
+                        <input type="text" class="form-control input-underline input-lg" id="inputLoginID" aria-describedby="userHelp" placeholder="Enter User name or Employee ID" name="UserName" [(ngModel)]="loginModelentity.UserName">
+                        <small id="userHelp" class="form-text text-muted">Enter EMS user name or employee id(for example: A00001/X00001)</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPassword">Password</label>
+                        <input type="password" class="form-control input-underline input-lg" id="InputPassword" placeholder="password" name="Password" [(ngModel)]="loginModelentity.Password">
+                    </div>
+                    <button type="button" class="btn rounded-btn" (click)="onSubmit()">Login</button>
+                </div>
+            </form>
+            <div class="alert alert-warning" *ngIf="isLoggingFailed">
+                <td colspan="2">
+                    <b>{{statusMessage}}</b>
+                </td>
+            </div>
+            <div *ngIf="showErrorDetails" class="alert alert-danger">
+                <ul *ngFor="let msg of validationMsg">
+                    <li>{{msg}}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

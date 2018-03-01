@@ -1,0 +1,20 @@
+<div *ngIf="timesheetAprovModelEntityCollection">
+  <div class="col col-md-4">
+    Timesheet Approver
+  </div>
+  <div class="col col-md-3">
+    <select id="inputTimesheetAprov" class="form-control" [(ngModel)]="timeSheetApproverId">
+      <option selected value="0">Select Timesheet Approver</option>
+      <option *ngFor="let lkValue of timesheetAprovModelEntityCollection" [value]="lkValue.ApproverGuid">{{lkValue.ApproverName}}</option>
+    </select>
+  </div>
+  <div class="col col-md-2"></div>
+  <div class="col col-md-3">
+    <button type="button" class="btn btn-primary" (click)="saveTimesheetApprover()">Modify Timesheet Approver</button>
+  </div>
+  <div clas="container" *ngIf="!timesheetAprovModelEntityCollection || isError">
+    <div class="col col-md-12 alert alert-warning">
+      {{statusMessage}}
+    </div>
+  </div>
+</div>

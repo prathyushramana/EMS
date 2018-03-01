@@ -1,0 +1,74 @@
+<div style="margin-top:10px" *ngIf="isProjectView && empProjMappingViewEntityCollection">
+  <div class="col col-md-12">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>User Id</th>
+          <th>Role</th>
+          <th>Employment Type</th>
+          <th>Allocation Start Date</th>
+          <th>Allocation End Date</th>
+          <th>IsActive</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mapping of empProjMappingViewEntityCollection">
+          <td>{{mapping.EmpName}}</td>
+          <td>{{mapping.EmpId}}</td>
+          <td>{{mapping.EmpRole}}</td>
+          <td>{{mapping.EmpType}}</td>
+          <td>{{mapping.FromDate| date:"MM/dd/y"}}</td>
+          <td>{{mapping.ToDate| date:"MM/dd/y"}}</td>
+          <td>
+            <input type="checkbox" name="IsActive" [(ngModel)]="mapping.IsActive" (ngModelChange)="allocationModified($event,mapping)">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col col-md-2"></div>
+  <div class="col col-md-7 alert alert-warning">
+    <b>**To extended employee allocaton to the project, please create new allocation with no overlapping dates.</b>
+  </div>
+  <div class="col col-md-3">
+    <button type="button" [disabled]="showMessage" class="btn btn-info btn-block" (click)="SaveMapping()">
+      <span class="glyphicon glyphicon-ok"></span> Save Mapping</button>
+    <small id="userHelp" class="text-muted">Apply only to Active/Deactivate the allocation.</small>
+  </div>
+</div>
+<div style="margin-top:10px" *ngIf="isEmployeeView && empProjMappingViewEntityCollection">
+  <div class="col col-md-12">
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Project</th>
+          <th>Type</th>
+          <th>Manager</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mapping of empProjMappingViewEntityCollection">
+          <td>{{mapping.Customer}}</td>
+          <td>{{mapping.ProjectName}}</td>
+          <td>{{mapping.ProjectType}}</td>
+          <td>{{mapping.ProjectManager}}</td>
+          <td>{{mapping.FromDate| date:"MM/dd/y"}}</td>
+          <td>{{mapping.ToDate| date:"MM/dd/y"}}</td>
+          <td>{{mapping.IsActive| booleanFilter}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <small id="userHelp" class="text-muted"><b>** View only, no modification can be made.</b></small>
+  </div>
+</div>
+<div class="col col-md-12" *ngIf="!empProjMappingViewEntityCollection || showMessage">
+  <p [class]="getAlertClass()">{{statusMessage}}</p>
+</div>
+<div class="col col-md-12 alert alert-warning" *ngIf="empProjMappingViewEntityCollection.length==0">
+  <span>No Allocation details present.</span>
+</div>

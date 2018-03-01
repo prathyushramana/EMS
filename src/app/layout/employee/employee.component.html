@@ -1,0 +1,103 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Employee Details'" [icon]="'fa-table'"></app-page-header>
+    <div class="row">
+        <div class="col-xl-2">
+            <a routerLink="/employee/newemployee" title="Add New Employee"><button class="btn btn-info"> <span class="glyphicon glyphicon-plus"></span> New</button></a>
+        </div>
+        <div class="col-xl-10"></div>
+    </div>
+    <div *ngIf="empCount>0">
+        <app-grid-pagination [RowCount]="empCount" (onParameterChange)="displayEmployeeDetails($event)"></app-grid-pagination>
+    </div>
+    <div class="row" style="margin-top:10px">
+        <div class="col-xl-2">
+            <select id="inputEmployeeType" class="form-control" name="EmployeeTypeId" [(ngModel)]="l_EmployeeModelentity.EmployeeTypeId">
+          <option selected value="0">Employee Type</option>
+          <option *ngFor="let lkValue of emp_Type_lookupValueCollection" [value]="lkValue.LookUpGuid">{{lkValue.Description}}</option>
+        </select>
+        </div>
+        <div class="col-xl-2">
+            <select id="inputDeptType" class="form-control" name="DepartmentId" [(ngModel)]="l_EmployeeModelentity.DepartmentId">
+          <option selected value="0">Department Type</option>
+          <option *ngFor="let lkValue of dept_lookupValueCollection" [value]="lkValue.LookUpGuid">{{lkValue.Description}}</option>
+        </select>
+        </div>
+        <div class="col-xl-2">
+            <select id="inputEmpMngr" class="form-control" name="ManagerId" [(ngModel)]="l_EmployeeModelentity.ManagerEmpGuid">
+          <option selected value="0">Reporting Manager</option>
+          <option *ngFor="let supervisorUser of l_SupervisorModelEntity" [value]="supervisorUser.UserManagerGuid">{{supervisorUser.ManagerName}}</option>
+        </select>
+        </div>
+        <div class="col col-md-1 has-success">
+            <div class="has-success">
+                <div class="checkbox">
+                    <label>
+              <input class="form-check-input" type="checkbox" name="IsActive" [(ngModel)]="l_EmployeeModelentity.IsActive"> Active
+            </label>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4">
+            <input type="text" class="form-control" id="inputFullName" placeholder="Provide name or email(prefix with '@' symbol)..." name="FullName" [(ngModel)]="l_EmployeeModelentity.FullName">
+        </div>
+        <div class="col col-md-1">
+            <button type="button" class="btn btn-info btn-block" (click)="getEmployeeCollection()">
+          <span class="glyphicon glyphicon-search"></span>
+        </button>
+        </div>
+    </div>
+
+    <div style="margin-top:15px" class="container-fluid">
+        <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-default">
+                    <tr>
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>Type</th>
+                        <th>Department</th>
+                        <th>Role</th>
+                        <th>Reporting Manager</th>
+                        <th>Joining Date</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let emp of l_EmpListCollection">
+                        <td>
+                            <a [routerLink]="['/employee/viewemployee',emp.EmpGuid]">{{emp.FullName}}</a>
+                        </td>
+                        <td>
+                            <div *ngIf="emp.Gender=='Male'" class="circle-male">M</div>
+                            <div *ngIf="emp.Gender=='Female'" class="circle-female">F</div>
+                        </td>
+                        <td>{{emp.EmployeeType}}</td>
+                        <td>{{emp.Department}}</td>
+                        <td>
+                            <div [title]="emp.Role">{{(emp.Role.length>10)? (emp.Role | slice:0:10)+'..':(emp.Role)}}</div>
+                        </td>
+                        <td>{{emp.ManagerName}}</td>
+                        <td>{{emp.DateOfJoining| date:"MM/dd/y"}}</td>
+                        <td>{{emp.Email}}</td>
+                    </tr>
+                    <tr *ngIf="l_EmpListCollection.length==0">
+                        <td colspan="8">No Employee(s) Found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row" *ngIf="empCount>0">
+    <div class="col-xl-2">
+        <a routerLink="/employee/newemployee" title="Add New Employee"><button class="btn btn-info"> <span class="glyphicon glyphicon-plus"></span> New</button></a>
+    </div>
+    <div class="col-xl-10"></div>
+</div>
+<div *ngIf="empCount>0">
+    <app-grid-pagination [RowCount]="empCount" (onParameterChange)="displayEmployeeDetails($event)"></app-grid-pagination>
+</div>
+
+<div class="alert alert-info" *ngIf="!all_lookUpValueCollection" role="alert">
+    {{statusMessage}}
+</div>

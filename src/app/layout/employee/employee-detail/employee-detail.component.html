@@ -1,0 +1,192 @@
+<div [@routerTransition]>
+    <app-page-header [heading]="'Add Employee'" [icon]="'fa-edit'"></app-page-header>
+    <div class="container" *ngIf="all_lookUpValueCollection">
+        <div *ngIf="showErrorDetails" class="alert alert-danger">
+            <ul *ngFor="let msg of validationMsg">
+                <li>{{msg}}</li>
+            </ul>
+        </div>
+        <form name="empDetailsForm" #empDetailsForm>
+            <div class="form-group row">
+                <label for="inputAppRole" class="col-lg-2 col-form-label">Applications Roles</label>
+                <div class="col-lg-10 " id="collapseExample" [ngbCollapse]="isCollapsed">
+                    <angular2-multiselect name="AppAccessRoles" [data]="dropdownList" [(ngModel)]="selectedItems" [settings]="dropdownSettings"
+                        (onSelect)="onItemSelect($event)" (onDeSelect)="OnItemDeSelect($event)" (onSelectAll)="onSelectAll($event)"
+                        (onDeSelectAll)="onDeSelectAll($event)">
+                    </angular2-multiselect>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputFname" class="col-lg-2 col-form-label">First Name*</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputFname" placeholder="First Name" name="FirstName" [(ngModel)]="l_EmployeeModelentity.FirstName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputMiddleName" class="col-lg-2 col-form-label">Middle Name</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputMiddleName" placeholder="Middle Name" name="MiddleName" [(ngModel)]="l_EmployeeModelentity.MiddleName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputLastName" class="col-lg-2 col-form-label">Last Name*</label>
+                <div class="col-lg-10">
+                    <input type="text" class="form-control" id="inputLastName" placeholder="Last Name" name="LastName" [(ngModel)]="l_EmployeeModelentity.LastName">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputGender" class="col-lg-2 col-form-label">Gender*</label>
+                <div class="col-lg-10">
+                    <select id="inputGender" class="form-control" name="Gender" [(ngModel)]="l_EmployeeModelentity.Gender">
+                        <option selected value="default">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmployeeType" class="col-lg-2 col-form-label">Employee Type*</label>
+                <div class="col-lg-10">
+                    <select id="inputEmployeeType" class="form-control" name="EmployeeTypeId" [(ngModel)]="l_EmployeeModelentity.EmployeeTypeId">
+                        <option selected value="0">Select Employee Type</option>
+                        <option *ngFor="let lkValue of emp_Type_lookupValueCollection" [value]="lkValue.LookUpGuid">{{lkValue.Description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputDateOfJoining" class="col-lg-2 col-form-label">Joining Date*</label>
+                <div class="col-lg-10 input-group datepicker-input">
+                    <input ngbDatepicker #d="ngbDatepicker" class="form-control" id="inputDateOfJoining" placeholder="Date of Joining" name="DateOfJoining"
+                        [ngModel]="l_EmployeeModelentity.DateOfJoining| date:'y-MM-dd'" (ngModelChange)="l_EmployeeModelentity.DateOfJoining = $event">
+                    <button class="input-group-addon" (click)="d.toggle()" type="button">
+                        <span class="fa fa-calendar"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputDeptType" class="col-lg-2 col-form-label">Department Type*</label>
+                <div class="col-lg-10">
+                    <select id="inputDeptType" class="form-control" name="DepartmentId" [(ngModel)]="l_EmployeeModelentity.DepartmentId">
+                        <option selected value="0">Select Department Type</option>
+                        <option *ngFor="let lkValue of dept_lookupValueCollection" [value]="lkValue.LookUpGuid">{{lkValue.Description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-2">Is Supervisor</div>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="IsManager" [(ngModel)]="l_EmployeeModelentity.IsManager">
+                            <span class="alert-danger">(** Employee can approve any unplanned task for the reportee.)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmpMngr" class="col-lg-2 col-form-label">Supervisor</label>
+                <div class="col-lg-10">
+                    <select id="inputEmpMngr" class="form-control" name="ManagerId" [(ngModel)]="l_EmployeeModelentity.ManagerEmpGuid">
+                        <option selected value="0">Select Supervisor</option>
+                        <option *ngFor="let supervisorUser of l_SupervisorModelEntity" [value]="supervisorUser.UserManagerGuid">{{supervisorUser.ManagerName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputRoleType" class="col-lg-2 col-form-label">Role*</label>
+                <div class="col-lg-10">
+                    <select id="inputRoleType" class="form-control" name="RoleId" [(ngModel)]="l_EmployeeModelentity.RoleId">
+                        <option selected value="0">Select Role</option>
+                        <option *ngFor="let lkValue of roles_lookUpValueCollection" [value]="lkValue.LookUpGuid">{{lkValue.Description}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputEmail" class="col-lg-2 col-form-label">Email</label>
+                <div class="col-lg-10">
+                    <input type="email" class="form-control" id="inputEmail" placeholder="Primary Email" name="Email" [(ngModel)]="l_EmployeeModelentity.Email">
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="l_EmployeeModelentity.EmpGuid">
+                <div class="col-lg-2">Is Active</div>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="IsActive" [(ngModel)]="l_EmployeeModelentity.IsActive">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-2">Is Timesheet Approver</div>
+                <div class="col-lg-10">
+                    <div class="form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="IsTimesheetApprover" [(ngModel)]="l_EmployeeModelentity.IsTimesheetApprover">
+                            <span class="alert-danger">(** Employee can approve timesheet)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputTimesheetAprov" class="col-lg-2 col-form-label">Timesheet Approver</label>
+                <div class="col-lg-10">
+                    <select id="inputTimesheetAprov" class="form-control" name="timeSheetApproverId" [(ngModel)]="timeSheetApproverId">
+                        <option selected value="0">Select Timesheet Approver</option>
+                        <option *ngFor="let lkValue of timesheetAprovModelEntityCollection" [value]="lkValue.ApproverGuid">{{lkValue.ApproverName}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-xl-4 text-xs-center">
+
+                </div>
+                <div class="col-xl-3 text-xs-center">
+                    <button type="button" class="btn btn-danger" (click)="createNewEmployee()">
+                        <span class="glyphicon glyphicon-remove"></span>
+                        Cancel</button>
+                </div>
+
+                <div class="col-xl-3 text-xs-center">
+                    <button type="button" class="btn btn-info" (click)="SubmitEmployeeDetails()">
+                        <span class="glyphicon glyphicon-ok"></span>
+                        Save</button>
+                </div>
+                <div class="col-xl-4 text-xs-center">
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-lg-12" *ngIf="l_EmployeeModelentity.EmpGuid">
+                    <div class="card mb-3" id="collapseExample" [ngbCollapse]="isCollapsed">
+                        <div class="card-header">
+                            <div class="col-xl-4 text-xs-center">
+
+                            </div>
+                            <div class="col-xl-4 text-xs-center">
+                                <button type="button" class="btn btn-outline-primary" (click)="ViewProject(); isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+                                    aria-controls="collapseExample">
+                                    {{projHeader}}
+                                </button>
+                            </div>
+
+                            <div class="col-xl-4 text-xs-center">
+
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-body" *ngIf="viewProject">
+                                <app-emp-proj [InputGuid]="l_EmployeeModelentity.EmpGuid" [Region]="componentName" (onMappingModified)="allocationModifiedEvent($event)"></app-emp-proj>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div clas="container" *ngIf="!all_lookUpValueCollection">
+        <div class="col-lg-10">
+            {{statusMessage}}
+        </div>
+    </div>
+</div>
